@@ -1,6 +1,6 @@
 <template>
     <div class="metronome-wrapper dark">
-        <polygonMetronome :oneMusicalBar="oneMusicalBar" :beatAngle="beatAngle" :beatNow="beatNow" :soundMusicalBar="soundMusicalBar" />
+        <polygonMetronome :oneMusicalBar="oneMusicalBar" :beatAngle="beatAngle" :beatNow="beatNow" :soundMusicalBar="soundMusicalBar" :size="size"/>
     </div>
 </template>
 
@@ -42,6 +42,10 @@
             soundMusicalBar: {
                 type: Boolean,
                 default: true
+            },
+            size: {
+                type: Number,
+                default: 400
             }
         },
         computed: {

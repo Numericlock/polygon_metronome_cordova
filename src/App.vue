@@ -1,8 +1,7 @@
 <template>
     <div class="container">
-        <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
         <div class="metronome">
-            <Metronome ref="metronome" :bpm="bpm.bpm" :oneMusicalBar="oneMusical.bar" :soundMusicalBar="soundMusicalBar" />
+            <Metronome ref="metronome" :bpm="bpm.bpm" :oneMusicalBar="oneMusical.bar" :soundMusicalBar="soundMusicalBar" :size="size"/>
         </div>
         <div class="metronome-controller">
             <div :class="['playback' ,{'pause': playbackNow}]" @click="suspend()"></div>
@@ -21,6 +20,7 @@
 </template>
 <script>
     import Metronome from './components/Metronome.vue';
+
     export default {
         name: 'app',
         components: {
@@ -28,6 +28,8 @@
         },
         data() {
             return {
+                width: window.innerWidth,
+                height: window.innerHeight,
                 bpm: {
                     bpm: 60,
                     min: 1,
@@ -64,7 +66,15 @@
             bpmValidate: function(e) {
                 this.bpm.bpm = Number(e.target.value);
             },
-
+            handleResize: function() {
+                this.width = window.innerWidth;
+                this.height = window.innerHeight;
+            }
+        },
+        computed: {
+            size() {
+                return this.height >= this.width ? this.width : this.height;
+            }
         },
         watch: {
             'oneMusical.bar'() {
@@ -75,13 +85,23 @@
                 if (this.bpm.bpm > this.bpm.max) this.bpm.isDanger = true;
                 else this.bpm.isDanger = false;
             }
+        },
+        mounted: function () {
+            window.addEventListener('resize', this.handleResize)
+        },
+        beforeUnmount: function () {
+            window.removeEventListener('resize', this.handleResize)
         }
     };
 </script>
 <style lang="scss">
+    * {
+        font-family: "游ゴシック体", "YuGothic", "游ゴシック", "Yu Gothic", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "メイリオ", "Meiryo", sans-serif;
+    }
     body {
         font-weight: bold;
         color: white;
+        height: 100vh;
         background: linear-gradient(-135deg, #E4A972, #39ACAC),
             linear-gradient(75deg, #E4A972, #9941D8, #79ffff)fixed;
         background: linear-gradient(-135deg, rgba(228, 169, 114, 0.9), rgba(57, 172, 172, 0.9));
