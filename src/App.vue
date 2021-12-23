@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="metronome">
-            <Metronome ref="metronome" :bpm="bpm.bpm" :oneMusicalBar="oneMusical.bar" :soundMusicalBar="soundMusicalBar" :size="size"/>
+            <Metronome ref="metronome" :bpm="bpm.bpm" :oneMusicalBar="oneMusical.bar" :soundMusicalBar="soundMusicalBar" :size="size" :upBeat="soundUpBeat"/>
         </div>
         <div class="metronome-controller">
             <div :class="['playback' ,{'pause': playbackNow}]" @click="suspend()"></div>
@@ -9,6 +9,10 @@
                 <span>bpm</span>
                 <input type="number" min="1" class="textbox" :value="bpm.bpm" @input="bpmValidate">
                 <input type="range" name="bpm" class="slider" :class="{'danger': bpm.isDanger}" :value="bpm.bpm" @input="bpmValidate" :min="bpm.min" :max="bpm.max">
+            </label>
+            <label>
+                <span>裏拍</span>
+                <input type="checkbox" v-model="soundUpBeat" />
             </label>
             <label>
                 <input type="checkbox" v-model="soundMusicalBar" />
@@ -46,6 +50,7 @@
                 vertex: 5,
                 soundMusicalBar: true,
                 playbackNow: false,
+                soundUpBeat: false,
             };
         },
         methods: {

@@ -2,7 +2,7 @@
     <div class="polygonMetronome-wrapper">
         <Hand v-if="beatNow%oneMusicalBar==0 && soundMusicalBar" class="hand-ball" :rotate="beatAngle" :size="getHandSize" style="background-color:red;" />
         <Hand v-else class="hand-ball" :rotate="beatAngle" :size="getHandSize"/>
-        <Polygon :vertex="oneMusicalBar" :border="true" :size="getCircleSize" />
+        <Polygon :cross="upBeat" cross-color='#777' :vertex="oneMusicalBar" :border="true" :size="getCircleSize" />
     </div>
 </template>
 
@@ -20,7 +20,7 @@
             beatAngle: {
                 type: Number,
             },
-            beatNow: {
+            beatNow: { 
                 type: Number,
             },
             soundMusicalBar: {
@@ -31,6 +31,10 @@
                 type: Number,
                 default: 400,
             },
+            upBeat : {
+                type: Boolean,
+                default: false
+            }
         },
         components: {
             Hand,
@@ -42,6 +46,9 @@
             },
             getCircleSize() {
                 return this.size * 0.85;
+            },
+            getTilt() {
+                return (360/this.oneMusicalBar) / 2; 
             },
         },
     }

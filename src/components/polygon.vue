@@ -1,8 +1,21 @@
 <template>
     <div :class="{'lists--odd':(vertex%2 == 1) , 'lists':(vertex%2 == 0)}" :style="{'min-width': size + 'px' , 'height' : size + 'px' }">
-        <h2>{{ }}</h2>
+        <h2></h2>
         <div class="polygon" :class="{'circle-border': border}" :style="{width: size + 'px', height: size + 'px', transform: 'rotate(' + polygonAngle + 'deg)'}">
             <div v-for="n in rectNum" :key="n" class="rect" :style="{width: sideLength + 'px' , height: rectHeight + 'px' , transform: 'rotate(' + centralAngle*n + 'deg)'}"></div>
+            <div v-if="cross" class="rect-wrapper">
+                <div 
+                    v-for="n in rectNum" 
+                    :key="n" 
+                    class="rect" 
+                    :style="{
+                        width: sideLength + 'px' , 
+                        height: rectHeight + 'px' , 
+                        transform: 'rotate(' + ((centralAngle*n) + tilt) + 'deg)',
+                        borderColor: crossColor,
+                    }"
+                ></div>
+            </div>
         </div>
     </div>
     <!--<div>
@@ -48,6 +61,18 @@
             return {}
         },
         props: {
+            cross: {
+                type: Boolean,
+                default:false
+            },
+            color: {
+                type: String,
+                default:'black'
+            },
+            crossColor: {
+                type: String,
+                default:'black'
+            },
             vertex: {
                 type: Number,
                 default: 5
@@ -113,7 +138,10 @@
                 return {
                     '--circle-size': this.size,
                 }
-            }
+            },
+            tilt() {
+                return (360/this.vertex) / 2; 
+            },
         },
         method: {
             baseAngle() {
